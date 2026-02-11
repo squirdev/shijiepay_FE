@@ -1,0 +1,47 @@
+@import './var.css';
+@import 'element-plus/theme-chalk/dark/css-vars.css';
+
+// 解决抽屉弹出时，body宽度变化的问题
+.el-popup-parent--hidden {
+  width: 100% !important;
+}
+
+.el-tag {
+  &.el-tag--danger {
+    --el-tag-text-color: #ef6346 !important;
+    --el-tag-bg-color: #fcedee !important;
+    --el-tag-border-color: #fadbdb !important;
+    --el-tag-hover-color: #ef6346 !important;
+  }
+  &.el-tag--success {
+    --el-tag-text-color: #60cf68 !important;
+    --el-tag-bg-color: #e7faf0 !important;
+    --el-tag-border-color: #d0f5e1 !important;
+    --el-tag-hover-color: #60cf68 !important;
+  }
+}
+
+.el-button--text {
+  --el-button-font-weight: 400 !important;
+}
+
+.el-input {
+  --el-input-height: 34px !important;
+}
+
+// font-size调整为12px
+.el-form-item--default {
+  --el-form-label-font-size: 12px !important;
+}
+
+.el-table--default {
+  font-size: 12px !important;
+}
+
+.el-pagination {
+  --el-pagination-font-size: 12px !important;
+}
+
+.el-select__wrapper {
+  font-size: 12px !important;
+}

@@ -1,0 +1,4 @@
+node_modules/       # 忽略宿主机的 node_modules
+.git/               # 忽略版本控制目录
+.pnpm-store
+.husky

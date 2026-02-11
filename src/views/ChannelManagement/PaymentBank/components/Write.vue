@@ -1,0 +1,80 @@
+<script setup lang="ts">
+import { Form, FormSchema } from '@/components/Form'
+import { useForm } from '@/hooks/web/useForm'
+import { computed, PropType, reactive, watch } from 'vue'
+import { PaymentChannelType } from '@/api/channelmanagement/types'
+import { useValidator } from '@/hooks/web/useValidator'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
+
+const { required } = useValidator()
+
+const props = defineProps({
+  currentRow: {
+    type: Object as PropType<PaymentChannelType>,
+    default: () => undefined
+  },
+  formSchema: {
+    type: Array as PropType<FormSchema[]>,
+    default: () => []
+  },
+  isEdit: {
+    type: Boolean,
+    default: false
+  },
+  batchType: {
+    type: String
+  }
+})
+
+const rules = reactive({
+  rate: !props.batchType || props.batchType === 'rate' ? [required()] : [],
+  single_fee_amount: !props.batchType || props.batchType === 'single_fee_amount' ? [required()] : []
+})
+
+const { formRegister, formMethods } = useForm()
+const { setValues, getFormData, getElFormExpose } = formMethods
+
+const submit = async () => {
+  const elForm = await getElFormExpose()
+  const valid = await elForm?.validate().catch((err) => {
+    console.log(err)
+  })
+  if (valid) {
+    const formData = await getFormData()
+    return formData
+  }
+}
+
+watch(
+  () => props.currentRow,
+  (currentRow) => {
+    if (!currentRow) return
+    setValues(currentRow)
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
+
+defineExpose({
+  submit
+})
+
+const filteredFormSchema = computed(() => {
+  if (props.batchType === 'rate') {
+    return props.formSchema.filter((field) => field.field === 'rate')
+  }
+
+  if (props.batchType === 'single_fee_amount') {
+    return props.formSchema.filter((field) => field.field === 'single_fee_amount')
+  }
+
+  return props.formSchema
+})
+</script>
+
+<template>
+  <Form :rules="rules" @register="formRegister" :schema="filteredFormSchema" />
+</template>
